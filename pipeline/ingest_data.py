@@ -13,10 +13,6 @@ from tqdm.auto import tqdm
 pd.__file__
 
 
-df = pd.read_csv(url)
-
-df.head()
-
 dtype = {
     "VendorID": "Int64",
     "passenger_count": "Int64",
@@ -40,12 +36,6 @@ parse_dates = [
     "tpep_pickup_datetime",
     "tpep_dropoff_datetime"
 ]
-
-
-#get_ipython().system('uv add sqlalchemy')
-#get_ipython().system('uv add psycopg2-binary')
-
-
 
 
 def run():
@@ -79,7 +69,7 @@ def run():
     first = True
     for df_chunck in tqdm(df_iter):
         if first:
-            df.head(0).to_sql(
+            df_chunck.head(0).to_sql(
                 name=target_table, 
                 con=engine, 
                 if_exists='replace'
@@ -93,8 +83,11 @@ def run():
         )
 
 
-#print(pd.io.sql.get_schema(df, name='yellow_taxi_data', con=engine))
 
 if __name__ == '__main__':
     run()
 
+#print(pd.io.sql.get_schema(df, name='yellow_taxi_data', con=engine))
+#get_ipython().system('uv add sqlalchemy')
+#get_ipython().system('uv add psycopg2-binary')
+#df = pd.read_csv(url)
